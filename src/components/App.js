@@ -18,7 +18,13 @@ import ChildhoodLead from "./ChildhoodLead";
 
 import ErrorPage from "./ErrorPage";
 
+let breadcrumbNames = ["home"];
+
 function App() {
+  function handleBreadcrumb(e) {
+    console.log("hit bc", e.target);
+  }
+
   const classes = useStyles();
 
   return (
@@ -36,20 +42,21 @@ function App() {
         <Grid container spacing={3}>
           <Grid item xs={12}></Grid>
           <BrowserRouter>
-            <Breadcrumbs aria-label="breadcrumb">
-              <Link color="inherit" href="/" onClick={""}>
-                Childhood Lead
-              </Link>
-              <Link
-                color="inherit"
-                href="/getting-started/installation/"
-                onClick={""}
-              >
-                Testing Rates
-              </Link>
-              <Typography color="textPrimary">Breadcrumb</Typography>
-            </Breadcrumbs>
-
+            <Grid item xs={12}>
+              <Breadcrumbs aria-label="breadcrumb">
+                <Link color="inherit" href="/" onClick={handleBreadcrumb}>
+                  Home
+                </Link>
+                <Link
+                  color="inherit"
+                  href="/getting-started/installation/"
+                  onClick={""}
+                >
+                  EPHT
+                </Link>
+                {/* <Typography color="textPrimary">Breadcrumb</Typography> */}
+              </Breadcrumbs>
+            </Grid>
             <Switch>
               <Route path="/" exact={true} component={Home} />
               <Route path={`/asthma`} exact={true} component={Asthma} />
@@ -150,6 +157,13 @@ const useStyles = makeStyles((theme) => ({
   },
   cardContent: {
     flexGrow: 1
+  },
+  lists: {
+    backgroundColor: theme.palette.background.paper,
+    marginTop: theme.spacing(1)
+  },
+  nested: {
+    paddingLeft: theme.spacing(4)
   },
   footer: {
     backgroundColor: theme.palette.background.paper,
