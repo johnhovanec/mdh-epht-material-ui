@@ -1,96 +1,94 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
-import Accordion from "@material-ui/core/Accordion";
-import AccordionDetails from "@material-ui/core/AccordionDetails";
-import AccordionSummary from "@material-ui/core/AccordionSummary";
+import AppBar from "@material-ui/core/AppBar";
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
 import Typography from "@material-ui/core/Typography";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import Box from "@material-ui/core/Box";
+
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box p={3}>
+          <Typography>{children}</Typography>
+        </Box>
+      )}
+    </div>
+  );
+}
+
+TabPanel.propTypes = {
+  children: PropTypes.node,
+  index: PropTypes.any.isRequired,
+  value: PropTypes.any.isRequired
+};
+
+function a11yProps(index) {
+  return {
+    id: `simple-tab-${index}`,
+    "aria-controls": `simple-tabpanel-${index}`
+  };
+}
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: "100%"
-  },
-  heading: {
-    fontSize: theme.typography.pxToRem(15),
-    flexBasis: "33.33%",
-    flexShrink: 0
-  },
-  secondaryHeading: {
-    fontSize: theme.typography.pxToRem(15),
-    color: theme.palette.text.secondary
-  },
-  paragraph: {
-    fontSize: theme.typography.pxToRem(14),
-    color: theme.palette.text.secondary
+    flexGrow: 1,
+    backgroundColor: theme.palette.background.paper
   }
 }));
 
-export default function RightMenu() {
+export default function HomeRightSideContent() {
   const classes = useStyles();
-  const [expanded, setExpanded] = React.useState(false);
+  const [value, setValue] = React.useState(0);
 
-  const handleChange = (panel) => (event, isExpanded) => {
-    setExpanded(isExpanded ? panel : false);
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
   };
 
   return (
     <div className={classes.root}>
-      <Accordion
-        expanded={expanded === "panel1"}
-        onChange={handleChange("panel1")}
-      >
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1bh-content"
-          id="panel1bh-header"
-        >
-          <Typography className={classes.heading}>Overview</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography className={classes.paragraph}>
-            Lead poisoning affects many children younger than 6 years old in
-            Maryland. Lead is often a home health hazard that can harm a child’s
-            brain, causing lifelong learning and behavior problems. The symptoms
-            of lead poisoning are not always easy to detect, but its effects are
-            long-lasting. While blood lead levels in children in Maryland have
-            decreased over the years, there are still children newly exposed to
-            lead every year. It is one of the most important environmental
-            problems for children in Maryland.
-            <section>
-              <h6 className={classes.secondaryHeading}>Where Lead is Found:</h6>
-              <ul>
-                <li>
-                  Chipping, peeling, flaking or deteriorating lead-based paint
-                </li>
-                <li>Certain foods and spices</li>
-                <li>Toys, jewelry, cosmetics, and other consumer products</li>
-                <li>Drinking water, from aging lead pipes or some fixtures</li>
-                <li>Soil</li>
-                <li>Certain jobs</li>
-              </ul>
-            </section>
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
-
-      <Accordion
-        expanded={expanded === "panel4"}
-        onChange={handleChange("panel4")}
-      >
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel4bh-content"
-          id="panel4bh-header"
-        >
-          <Typography className={classes.heading}>Resources</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            Nunc vitae orci ultricies, auctor nunc in, volutpat nisl. Integer
-            sit amet egestas eros, vitae egestas augue. Duis vel est augue.
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
+      <AppBar position="static">
+        <Tabs value={value} onChange={handleChange} aria-label="help content">
+          <Tab label="About" {...a11yProps(0)} />
+          <Tab label="How to Search" {...a11yProps(1)} />
+        </Tabs>
+      </AppBar>
+      <TabPanel value={value} index={0}>
+        <p>
+          Some content on the site's purpose and content. Consectetur adipiscing
+          elit, sed do eiusmod tempor incididunt ut labore et dolore magna
+          aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+          laboris nisi ut aliquip ex ea commodo consequat.
+        </p>
+        <p>
+          Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
+          dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+          proident, sunt in culpa qui officia deserunt mollit anim id est
+          laborum.
+        </p>
+      </TabPanel>
+      <TabPanel value={value} index={1}>
+        <p>
+          Some content on how to search for topics. Consectetur adipiscing elit,
+          sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+          enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi
+          ut aliquip ex ea commodo consequat.
+        </p>
+        <p>
+          Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
+          officia deserunt mollit anim id est laborum.
+        </p>
+      </TabPanel>
     </div>
   );
 }

@@ -6,7 +6,6 @@ import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
-import CssBaseline from "@material-ui/core/CssBaseline";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
 
@@ -18,9 +17,7 @@ function Home() {
 
   return (
     <div className={classes.root}>
-      <CssBaseline />
       <main className={classes.content}>
-        <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
           <Grid container spacing={3}>
             {/* Main Content */}
@@ -30,56 +27,14 @@ function Home() {
               </Paper>
             </Grid>
 
-            {/* Right-hand Accordion */}
+            {/* Right-side content */}
             <Grid item xs={12} md={4} lg={3}>
               <HomeRightSideContent />
             </Grid>
-
-            {/* Chart */}
-            {/* <Grid item xs={12} md={8} lg={9}>
-            <Paper className={fixedHeightPaper}>
-              <Chart />
-            </Paper>
-          </Grid> */}
           </Grid>
         </Container>
-        {/* <Copyright /> */}
       </main>
     </div>
-    // <div className={classes.root}>
-    //   <Grid container fixed spacing={3}>
-    //     <Grid item xs={12}>
-    //       <Card>
-    //         <CardContent className={classes.cardContent}>
-    //           <Typography gutterBottom variant="h5" component="h2">
-    //             EPHT Landing Page Header
-    //           </Typography>
-    //         </CardContent>
-    //       </Card>
-    //     </Grid>
-    //   </Grid>
-
-    //   <Grid container direction="row" justify="center" alignItems="stretch">
-    //     <Grid item xs={12} sm={6}>
-    //       <Card>
-    //         <CardContent className={null}>
-    //           <Typography gutterBottom variant="h5" component="h2">
-    //             A - Z Content
-    //           </Typography>
-    //         </CardContent>
-    //       </Card>
-    //     </Grid>
-    //   </Grid>
-    //   <Grid item xs={12} sm={2}>
-    //     <Card>
-    //       <CardContent className={null}>
-    //         <Typography gutterBottom variant="h5" component="h2">
-    //           Help
-    //         </Typography>
-    //       </CardContent>
-    //     </Card>
-    //   </Grid>
-    // </div>
   );
 }
 
