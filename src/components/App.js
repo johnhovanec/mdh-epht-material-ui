@@ -1,10 +1,8 @@
 import React from "react";
 import { BrowserRouter, Link } from "react-router-dom";
-import clsx from "clsx";
-import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
+import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import Toolbar from "@material-ui/core/Toolbar";
 import Breadcrumbs from "@material-ui/core/Breadcrumbs";
@@ -131,50 +129,45 @@ function App() {
           </Toolbar>
         </AppBar>
 
-        <main>
-          <Grid container spacing={3}>
-            <Grid item xs={12}></Grid>
-            <BrowserRouter>
-              <Grid item xs={12}>
-                <Breadcrumbs aria-label="breadcrumb" className={classes.nested}>
-                  <Link color="inherit" href="/" onClick={handleBreadcrumb}>
-                    Home
-                  </Link>
-                  <Link
-                    color="inherit"
-                    href="/getting-started/installation/"
-                    onClick={""}
-                  >
-                    EPHT
-                  </Link>
-                  {/* <Typography color="textPrimary">Breadcrumb</Typography> */}
-                </Breadcrumbs>
-              </Grid>
-              <Switch>
-                <Route path="/" exact={true} component={Home} />
-                <Route path={`/asthma`} exact={true} component={Asthma} />
-                <Route path={`/lead`} exact={true} component={ChildhoodLead} />
-                <Route
-                  path={`/:lead/file`}
-                  render={(props) => <ChildhoodLead {...props} type="file" />}
-                  exact={true}
-                />
-                <Route
-                  render={() => (
-                    <Grid
-                      item
-                      xs={12}
-                      justify="center"
-                      className={classes.paper}
-                    >
-                      Sorry... nothing here.
-                    </Grid>
-                  )}
-                />
-              </Switch>
-            </BrowserRouter>
-          </Grid>
-        </main>
+        {/* <main> */}
+        <Grid container spacing={3}>
+          <Grid item xs={12}></Grid>
+          <BrowserRouter>
+            <Grid item xs={12}>
+              <Breadcrumbs aria-label="breadcrumb" className={classes.nested}>
+                <Link color="inherit" href="/" onClick={handleBreadcrumb}>
+                  Home
+                </Link>
+                <Link
+                  color="inherit"
+                  href="/getting-started/installation/"
+                  onClick={""}
+                >
+                  EPHT
+                </Link>
+                {/* <Typography color="textPrimary">Breadcrumb</Typography> */}
+              </Breadcrumbs>
+            </Grid>
+            <Switch>
+              <Route path="/" exact={true} component={Home} />
+              <Route path={`/asthma`} exact={true} component={Asthma} />
+              <Route path={`/lead`} exact={true} component={ChildhoodLead} />
+              <Route
+                path={`/:lead/file`}
+                render={(props) => <ChildhoodLead {...props} type="file" />}
+                exact={true}
+              />
+              <Route
+                render={() => (
+                  <Grid item xs={12} justify="center" className={classes.paper}>
+                    Sorry... nothing here.
+                  </Grid>
+                )}
+              />
+            </Switch>
+          </BrowserRouter>
+        </Grid>
+        {/* </main> */}
       </React.Fragment>
     </ThemeProvider>
   );

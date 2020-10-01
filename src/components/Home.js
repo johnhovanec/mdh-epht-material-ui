@@ -1,6 +1,6 @@
 import React from "react";
-import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
+import Grid from "@material-ui/core/Grid";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
@@ -18,7 +18,7 @@ function Home() {
   return (
     <div className={classes.root}>
       <main className={classes.content}>
-        <Container maxWidth="lg" className={classes.container}>
+        <Container maxWidth="xl">
           <Grid container spacing={3}>
             {/* Main Content */}
             <Grid item xs={12} md={8} lg={9}>
