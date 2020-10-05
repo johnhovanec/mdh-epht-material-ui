@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
 import CardActions from "@material-ui/core/CardActions";
@@ -13,6 +13,335 @@ import MenuIcon from "@material-ui/icons/Menu";
 import SearchIcon from "@material-ui/icons/Search";
 import Paper from "@material-ui/core/Paper";
 import Container from "@material-ui/core/Container";
+import ToggleButton from "@material-ui/lab/ToggleButton";
+import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
+
+const items = [
+  {
+    name: "A",
+    group: "health"
+  },
+  {
+    name: "AIDS and HIV",
+    group: "health"
+  },
+  {
+    name: "Air Quality",
+    group: "environment"
+  },
+  {
+    name: "Alcohol Abuse",
+    group: "health"
+  },
+  {
+    name: "Asthma",
+    group: "health"
+  },
+  {
+    name: "B",
+    group: "health"
+  },
+  {
+    name: "Babies Born Healthy",
+    group: "health"
+  },
+  {
+    name: "Back to School Vaccination Requirements",
+    group: "health"
+  },
+  {
+    name: "C",
+    group: "health"
+  },
+  {
+    name: "Cancer",
+    group: "health"
+  },
+  {
+    name: "Chickenpox",
+    group: "health"
+  },
+  {
+    name: "Cigarettes",
+    group: "health"
+  },
+  {
+    name: "Climate Change",
+    group: "environment"
+  },
+  {
+    name: "Coronavirus ",
+    group: "health"
+  },
+  {
+    name: "Critical Congenital Heart Disease Screening",
+    group: "health"
+  },
+  {
+    name: "​D",
+    group: "health"
+  },
+  {
+    name: "Developmental Disabilities Administration",
+    group: "health"
+  },
+  {
+    name: "Diabetes",
+    group: "health"
+  },
+  {
+    name: "Down Syndrome",
+    group: "health"
+  },
+  {
+    name: "Drinking Water",
+    group: "health"
+  },
+  {
+    name: "Drug Abuse",
+    group: "health"
+  },
+  {
+    name: "E",
+    group: "health"
+  },
+  {
+    name: "Environmental Health",
+    group: "health"
+  },
+  {
+    name: "F",
+    group: "health"
+  },
+  {
+    name: "Family Planning",
+    group: "health"
+  },
+  {
+    name: "Flu (Influenza)",
+    group: "health"
+  },
+  {
+    name: "Food Allergies",
+    group: "health"
+  },
+  {
+    name: "G",
+    group: "health"
+  },
+  {
+    name: "Genital Herpes",
+    group: "health"
+  },
+  {
+    name: "Gonorrhea",
+    group: "health"
+  },
+  {
+    name: "H",
+    group: "health"
+  },
+  {
+    name: "Heart Disease",
+    group: "health"
+  },
+  {
+    name: "Heat-Related Illness Prevention",
+    group: "health"
+  },
+  {
+    name: "Hepatitis",
+    group: "health"
+  },
+  {
+    name: "HIV/AIDS",
+    group: "health"
+  },
+  {
+    name: "I",
+    group: "health"
+  },
+  {
+    name: "Influenza",
+    group: "health"
+  },
+  {
+    name: "Injury Prevention",
+    group: "health"
+  },
+  {
+    name: "J",
+    group: "health"
+  },
+  {
+    name: "Job Safety",
+    group: "health"
+  },
+  {
+    name: "K",
+    group: "health"
+  },
+  {
+    name: "Kawasaki Disease",
+    group: "health"
+  },
+  {
+    name: "Kids in Safety Seats (KISS)",
+    group: "health"
+  },
+  {
+    name: "L",
+    group: "health"
+  },
+  {
+    name: "Lead",
+    group: "health"
+  },
+  {
+    name: "Local Health Departments",
+    group: "health"
+  },
+  {
+    name: "Lyme Disease",
+    group: "health"
+  },
+  {
+    name: "M",
+    group: "health"
+  },
+  {
+    name: "Medicaid",
+    group: "health"
+  },
+  {
+    name: "Mental Health",
+    group: "health"
+  },
+  {
+    name: "N",
+    group: "health"
+  },
+  {
+    name: "Nutrition",
+    group: "health"
+  },
+  {
+    name: "O",
+    group: "health"
+  },
+  {
+    name: "Obesity",
+    group: "health"
+  },
+  {
+    name: "Occupational Safety and Health",
+    group: "health"
+  },
+  {
+    name: "Opioid Overdose Prevention",
+    group: "health"
+  },
+  {
+    name: "P",
+    group: "health"
+  },
+  {
+    name: "Pregnancy, Risk Monitoring",
+    group: "health"
+  },
+  {
+    name: "R",
+    group: "health"
+  },
+  {
+    name: "Radon",
+    group: "health"
+  },
+  {
+    name: "Rape and Sexual Assault, Prevention",
+    group: "health"
+  },
+  {
+    name: "Reproductive Health",
+    group: "health"
+  },
+  {
+    name: "S",
+    group: "health"
+  },
+  {
+    name: "Second-Hand Smoke",
+    group: "health"
+  },
+  {
+    name: "Sexually Transmitted Infections",
+    group: "health"
+  },
+  {
+    name: "Syphilis",
+    group: "health"
+  },
+  {
+    name: "T",
+    group: "health"
+  },
+  {
+    name: "Teen Pregnancy Prevention",
+    group: "health"
+  },
+  {
+    name: "Tetanus ",
+    group: "health"
+  },
+  {
+    name: "Tobacco",
+    group: "health"
+  },
+  {
+    name: "Tuberculosis",
+    group: "health"
+  },
+  {
+    name: "Typhoid Fever (PDF)",
+    group: "health"
+  },
+  {
+    name: "V",
+    group: "health"
+  },
+  {
+    name: "Vaccines for Children",
+    group: "health"
+  },
+  {
+    name: "Vaping",
+    group: "health"
+  },
+  {
+    name: "W",
+    group: "health"
+  },
+  {
+    name: "WIC",
+    group: "health"
+  },
+  {
+    name: "West Nile Virus",
+    group: "health"
+  },
+  {
+    name: "Y",
+    group: "health"
+  },
+  {
+    name: "Youth Camps",
+    group: "health"
+  },
+  {
+    name: "Youth Smoking",
+    group: "health"
+  }
+];
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -96,40 +425,17 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function HomeMainContent() {
-  const alphaArray = [
-    "A",
-    "B",
-    "C",
-    "D",
-    "E",
-    "F",
-    "G",
-    "H",
-    "I",
-    "J",
-    "K",
-    "L",
-    "M",
-    "N",
-    "O",
-    "P",
-    "Q",
-    "R",
-    "S",
-    "T",
-    "U",
-    "V",
-    "W",
-    "X",
-    "Y",
-    "Z"
-  ];
+  const [filters, setFormats] = React.useState(() => ["all"]);
+
+  const handleFormat = (event, newFormats) => {
+    setFormats(newFormats);
+  };
 
   function ItemsList() {
-    return itemsArray.map((item, index) => (
+    return items.map((item, index) => (
       <a href="/">
-        <li key={index} className={classes.listItem}>
-          {item}
+        <li key={item.name} className={classes.listItem}>
+          {item.name}
         </li>
       </a>
     ));
@@ -137,20 +443,62 @@ function HomeMainContent() {
 
   const classes = useStyles();
 
+  console.log("This state:", filters);
   return (
     <Grid container spacing={2} className={classes.cardHeader}>
       <Grid item xs={12}>
         {/* Filter by Group buttons */}
-        <ButtonGroup color="primary" aria-label="outlined primary button group">
-          <Button size="small">All</Button>
-          <Button size="small">Health</Button>
-          <Button size="small">Environment</Button>
+        {/* <ButtonGroup color="primary" aria-label="outlined primary button group">
+          <Button
+            size="small"
+            value="all"
+            variant=""
+            onClick={handleFilterButton}
+          >
+            All
+          </Button>
+          <Button size="small" value="health" onClick={handleFilterButton}>
+            Health
+          </Button>
+          <Button size="small" value="environment" onClick={handleFilterButton}>
+            Environment
+          </Button>
         </ButtonGroup>
         <ButtonGroup color="primary" aria-label="outlined primary button group">
-          <Button size="small">Popular</Button>
-          <Button size="small">Physical</Button>
-          <Button size="small">Social</Button>
-        </ButtonGroup>
+          <Button size="small" value="popular" onClick={handleFilterButton}>
+            Popular
+          </Button>
+          <Button size="small" value="physical" onClick={handleFilterButton}>
+            Physical
+          </Button>
+          <Button size="small" value="social" onClick={handleFilterButton}>
+            Social
+          </Button>
+        </ButtonGroup> */}
+
+        <ToggleButtonGroup
+          value={filters}
+          onChange={handleFormat}
+          aria-label="text formatting"
+          color="primary"
+          size="small"
+        >
+          <ToggleButton value="all" aria-label="all">
+            All
+          </ToggleButton>
+          <ToggleButton value="health" aria-label="health">
+            Health
+          </ToggleButton>
+          <ToggleButton value="environment" aria-label="environment">
+            Environment
+          </ToggleButton>
+          <ToggleButton value="physical" aria-label="physical">
+            Physical
+          </ToggleButton>
+          <ToggleButton value="social" aria-label="social">
+            Social
+          </ToggleButton>
+        </ToggleButtonGroup>
       </Grid>
 
       <Grid item xs={12}>
@@ -180,87 +528,3 @@ function HomeMainContent() {
 }
 
 export default HomeMainContent;
-
-const itemsArray = [
-  "A",
-  "AIDS and HIV",
-  "Air Quality",
-  "Alcohol Abuse",
-  "Asthma",
-  "B",
-  "Babies Born Healthy",
-  "Back to School Vaccination Requirements",
-  "C",
-  "Cancer",
-  "Chickenpox",
-  "Cigarettes",
-  "Climate Change",
-  "Coronavirus ",
-  "Critical Congenital Heart Disease Screening",
-  "​D",
-  "Developmental Disabilities Administration",
-  "Diabetes",
-  "Down Syndrome",
-  "Drinking Water",
-  "Drug Abuse",
-  "E",
-  "Environmental Health",
-  "F",
-  "Family Planning",
-  "Flu (Influenza)",
-  "Food Allergies",
-  "G",
-  "Genital Herpes",
-  "Gonorrhea",
-  "H",
-  "Heart Disease",
-  "Heat-Related Illness Prevention",
-  "Hepatitis",
-  "HIV/AIDS",
-  "I",
-  "Influenza",
-  "Injury Prevention",
-  "J",
-  "Job Safety",
-  "K",
-  "Kawasaki Disease",
-  "Kids in Safety Seats (KISS)",
-  "L",
-  "Lead",
-  "Local Health Departments",
-  "Lyme Disease",
-  "M",
-  "Medicaid",
-  "Mental Health",
-  "N",
-  "Nutrition",
-  "O",
-  "Obesity",
-  "Occupational Safety and Health",
-  "Opioid Overdose Prevention",
-  "P",
-  "Pregnancy, Risk Monitoring",
-  "R",
-  "Radon",
-  "Rape and Sexual Assault, Prevention",
-  "Reproductive Health",
-  "S",
-  "Second-Hand Smoke",
-  "Sexually Transmitted Infections",
-  "Syphilis",
-  "T",
-  "Teen Pregnancy Prevention",
-  "Tetanus ",
-  "Tobacco",
-  "Tuberculosis",
-  "Typhoid Fever (PDF)",
-  "V",
-  "Vaccines for Children",
-  "Vaping",
-  "W",
-  "WIC",
-  "West Nile Virus",
-  "Y",
-  "Youth Camps",
-  "Youth Smoking"
-];
