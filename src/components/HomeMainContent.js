@@ -16,7 +16,7 @@ import Container from "@material-ui/core/Container";
 import ToggleButton from "@material-ui/lab/ToggleButton";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 
-const items = [
+let itemsList = [
   {
     name: "A",
     group: "health"
@@ -425,14 +425,24 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function HomeMainContent() {
-  const [filters, setFormats] = React.useState(() => ["all"]);
+  const [filters, setFilters] = React.useState(() => ["all"]);
+  const [initialRender, setInitial] = React.useState(() => true);
 
-  const handleFormat = (event, newFormats) => {
-    setFormats(newFormats);
+  const handleFilter = (event, newFilters) => {
+    console.log("New Filters: ", newFilters, " initial load: ", initialRender);
+    setInitial(false);
+
+    setFilters(newFilters.filter((x) => x != "all"));
+
+    //If filters are selected and All is chosen we want to override the others
+    if (newFilters.includes("all") && newFilters.length > 1) {
+      console.log("Removing selected filters and using All");
+      setFilters(["all"]);
+    }
   };
 
-  function ItemsList() {
-    return items.map((item, index) => (
+  function ItemsList(props) {
+    return props.items.map((item, index) => (
       <a href="/">
         <li key={item.name} className={classes.listItem}>
           {item.name}
@@ -443,42 +453,14 @@ function HomeMainContent() {
 
   const classes = useStyles();
 
-  console.log("This state:", filters);
+  //console.log("This state:", filters);
   return (
     <Grid container spacing={2} className={classes.cardHeader}>
       <Grid item xs={12}>
         {/* Filter by Group buttons */}
-        {/* <ButtonGroup color="primary" aria-label="outlined primary button group">
-          <Button
-            size="small"
-            value="all"
-            variant=""
-            onClick={handleFilterButton}
-          >
-            All
-          </Button>
-          <Button size="small" value="health" onClick={handleFilterButton}>
-            Health
-          </Button>
-          <Button size="small" value="environment" onClick={handleFilterButton}>
-            Environment
-          </Button>
-        </ButtonGroup>
-        <ButtonGroup color="primary" aria-label="outlined primary button group">
-          <Button size="small" value="popular" onClick={handleFilterButton}>
-            Popular
-          </Button>
-          <Button size="small" value="physical" onClick={handleFilterButton}>
-            Physical
-          </Button>
-          <Button size="small" value="social" onClick={handleFilterButton}>
-            Social
-          </Button>
-        </ButtonGroup> */}
-
         <ToggleButtonGroup
           value={filters}
-          onChange={handleFormat}
+          onChange={handleFilter}
           aria-label="text formatting"
           color="primary"
           size="small"
@@ -520,7 +502,7 @@ function HomeMainContent() {
       {/* Three Column Items List */}
       <Grid item>
         <ul className={classes.ulList}>
-          <ItemsList />
+          <ItemsList items={itemsList} />
         </ul>
       </Grid>
     </Grid>
