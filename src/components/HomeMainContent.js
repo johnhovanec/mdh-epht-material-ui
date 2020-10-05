@@ -12,6 +12,7 @@ import { fade, makeStyles } from "@material-ui/core/styles";
 import MenuIcon from "@material-ui/icons/Menu";
 import SearchIcon from "@material-ui/icons/Search";
 import Paper from "@material-ui/core/Paper";
+import Container from "@material-ui/core/Container";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,41 +23,30 @@ const useStyles = makeStyles((theme) => ({
     // flexDirection: 'column',
     // backgroundColor: "red",
   },
-  ul_list: {
-    display: "flex",
-    flexWrap: "wrap",
-    justifyContent: "flex-start",
-    backgroundColor: "red",
-    // width: "100%",
-    margin: "0",
-    padding: "0",
+  // ulList: {
+  //   display: "flex",
+  //   flexWrap: "wrap",
+  //   justifyContent: "flex-start",
+  //   backgroundColor: "red",
+  //   width: "33%",
+  //   margin: "0",
+  //   padding: "0",
+  //   "& > *": {
+  //     marginRight: "1.1%",
+  //     textDecoration: "none"
+  //   }
+  // },
+  ulList: {
+    columns: "3 auto",
     "& > *": {
-      marginRight: "1.1%",
       textDecoration: "none"
     }
   },
-  li_item: {
-    // display: "block",
-    // flex: "0 1 auto",
+  listItem: {
     listStyleType: "none"
   },
   cardHeader: {
-    // display: "flex",
-    // flexDirection: "row-reverse",
-    // justifyContent: "flex-end",
-    backgroundColor: "yellow",
-    minWidth: 275
-  },
-  filterButtons: {
-    display: "flex",
-    backgroundColor: "lime",
-    flexDirection: "row"
-    // flexWrap: "no-wrap",
-    // justifyContent: "flex-start",
-    // alignItems: "center",
-    // "& > *": {
-    //   margin: "1%"
-    // }
+    backgroundColor: "#eee"
   },
   inputRoot: {
     color: "inherit"
@@ -135,11 +125,11 @@ function HomeMainContent() {
     "Z"
   ];
 
-  function AlphaList() {
-    return alphaArray.map((letter, index) => (
+  function ItemsList() {
+    return itemsArray.map((item, index) => (
       <a href="/">
-        <li key={index} className={classes.li_item}>
-          {letter}
+        <li key={index} className={classes.listItem}>
+          {item}
         </li>
       </a>
     ));
@@ -148,115 +138,129 @@ function HomeMainContent() {
   const classes = useStyles();
 
   return (
-    <Card className={null} variant="outlined">
-      <CardHeader
-        action={
-          <CardActions>
-            <div className={classes.cardHeader}>
-              <Grid
-                container
-                direction="row"
-                justify="flex-start"
-                alignItems="center"
-                spacing={1}
-              >
-                {/* Filter by Group buttons */}
-                {/* <div className={classes.filterButtons}> */}
-                <Grid
-                  item
-                  xs={3}
-                  sm={3}
-                  container
-                  className={classes.filterButtons}
-                >
-                  <Grid
-                    item
-                    xs={12}
-                    container
-                    justify="flex-start"
-                    direction="row"
-                    flexWrap="nowrap"
-                  >
-                    <ButtonGroup
-                      color="primary"
-                      aria-label="outlined primary button group"
-                    >
-                      <Button size="small">All</Button>
-                      <Button size="small">Health</Button>
-                      <Button size="small">Environment</Button>
-                    </ButtonGroup>
-                    <ButtonGroup
-                      color="primary"
-                      aria-label="outlined primary button group"
-                    >
-                      <Button size="small">Popular</Button>
-                      <Button size="small">Physical</Button>
-                      <Button size="small">Social</Button>
-                    </ButtonGroup>
-                  </Grid>
-                  {/* <Grid item xs={12} sm={3}>
-                    <ButtonGroup
-                      variant="contained"
-                      color="primary"
-                      aria-label="contained primary button group"
-                    >
-                      <Button size="small">Popular</Button>
-                      <Button size="small">Physical</Button>
-                      <Button size="small">Social</Button>
-                    </ButtonGroup>
-                  </Grid> */}
-                </Grid>
-                {/* </div> */}
+    <Grid container spacing={2} className={classes.cardHeader}>
+      <Grid item xs={12}>
+        {/* Filter by Group buttons */}
+        <ButtonGroup color="primary" aria-label="outlined primary button group">
+          <Button size="small">All</Button>
+          <Button size="small">Health</Button>
+          <Button size="small">Environment</Button>
+        </ButtonGroup>
+        <ButtonGroup color="primary" aria-label="outlined primary button group">
+          <Button size="small">Popular</Button>
+          <Button size="small">Physical</Button>
+          <Button size="small">Social</Button>
+        </ButtonGroup>
+      </Grid>
 
-                {/* Alpha selector */}
-                <Grid item xs={10} sm={3} container flexWrap="nowrap">
-                  {/* <div className={classes.alphaList}> */}
-                  <ul className={classes.ul_list}>
-                    <AlphaList />
-                  </ul>
-                  {/* </div> */}
-                </Grid>
+      <Grid item xs={12}>
+        <div className={classes.search}>
+          <div className={classes.searchIcon}>
+            <SearchIcon />
+          </div>
+          <InputBase
+            placeholder="Search…"
+            classes={{
+              root: classes.inputRoot,
+              input: classes.inputInput
+            }}
+            inputProps={{ "aria-label": "search" }}
+          />
+        </div>
+      </Grid>
 
-                {/* Search input */}
-                <Grid item xs={12} sm={3}>
-                  <div className={classes.search}>
-                    <div className={classes.searchIcon}>
-                      <SearchIcon />
-                    </div>
-                    <InputBase
-                      placeholder="Search…"
-                      classes={{
-                        root: classes.inputRoot,
-                        input: classes.inputInput
-                      }}
-                      inputProps={{ "aria-label": "search" }}
-                    />
-                  </div>
-                </Grid>
-              </Grid>
-            </div>
-          </CardActions>
-        }
-        className={classes.cardHeader}
-      />
-      <CardContent>
-        <Grid container spacing={3}>
-          {/* <Grid item xs={12}>
-            <Paper className={classes.paper}>xs=12</Paper>
-          </Grid> */}
-          <Grid item xs={12} sm={4}>
-            <Paper className={classes.paper}>xs=12 sm=4</Paper>
-          </Grid>
-          <Grid item xs={12} sm={4}>
-            <Paper className={classes.paper}>xs=12 sm=4</Paper>
-          </Grid>
-          <Grid item xs={6} sm={4}>
-            <Paper className={classes.paper}>xs=6 sm=4</Paper>
-          </Grid>
-        </Grid>
-      </CardContent>
-    </Card>
+      {/* Three Column Items List */}
+      <Grid item>
+        <ul className={classes.ulList}>
+          <ItemsList />
+        </ul>
+      </Grid>
+    </Grid>
   );
 }
 
 export default HomeMainContent;
+
+const itemsArray = [
+  "A",
+  "AIDS and HIV",
+  "Air Quality",
+  "Alcohol Abuse",
+  "Asthma",
+  "B",
+  "Babies Born Healthy",
+  "Back to School Vaccination Requirements",
+  "C",
+  "Cancer",
+  "Chickenpox",
+  "Cigarettes",
+  "Climate Change",
+  "Coronavirus ",
+  "Critical Congenital Heart Disease Screening",
+  "​D",
+  "Developmental Disabilities Administration",
+  "Diabetes",
+  "Down Syndrome",
+  "Drinking Water",
+  "Drug Abuse",
+  "E",
+  "Environmental Health",
+  "F",
+  "Family Planning",
+  "Flu (Influenza)",
+  "Food Allergies",
+  "G",
+  "Genital Herpes",
+  "Gonorrhea",
+  "H",
+  "Heart Disease",
+  "Heat-Related Illness Prevention",
+  "Hepatitis",
+  "HIV/AIDS",
+  "I",
+  "Influenza",
+  "Injury Prevention",
+  "J",
+  "Job Safety",
+  "K",
+  "Kawasaki Disease",
+  "Kids in Safety Seats (KISS)",
+  "L",
+  "Lead",
+  "Local Health Departments",
+  "Lyme Disease",
+  "M",
+  "Medicaid",
+  "Mental Health",
+  "N",
+  "Nutrition",
+  "O",
+  "Obesity",
+  "Occupational Safety and Health",
+  "Opioid Overdose Prevention",
+  "P",
+  "Pregnancy, Risk Monitoring",
+  "R",
+  "Radon",
+  "Rape and Sexual Assault, Prevention",
+  "Reproductive Health",
+  "S",
+  "Second-Hand Smoke",
+  "Sexually Transmitted Infections",
+  "Syphilis",
+  "T",
+  "Teen Pregnancy Prevention",
+  "Tetanus ",
+  "Tobacco",
+  "Tuberculosis",
+  "Typhoid Fever (PDF)",
+  "V",
+  "Vaccines for Children",
+  "Vaping",
+  "W",
+  "WIC",
+  "West Nile Virus",
+  "Y",
+  "Youth Camps",
+  "Youth Smoking"
+];

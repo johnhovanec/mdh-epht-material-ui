@@ -1,4 +1,5 @@
 import React from "react";
+import Container from "@material-ui/core/Container";
 import Card from "@material-ui/core/Card";
 import Grid from "@material-ui/core/Grid";
 import CardActions from "@material-ui/core/CardActions";
@@ -6,7 +7,6 @@ import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
-import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
 
 import HomeRightSideContent from "./HomeRightSideContent";
@@ -16,34 +16,26 @@ function Home() {
   const classes = useStyles();
 
   return (
-    <div className={classes.root}>
-      <main className={classes.content}>
-        <Container maxWidth="xl">
-          <Grid container spacing={3}>
-            {/* Main Content */}
-            <Grid item xs={12} md={8} lg={9}>
-              <Paper className={classes.paper}>
-                <HomeMainContent />
-              </Paper>
-            </Grid>
+    <Container maxWidth="xl">
+      <Grid container spacing={2}>
+        {/* Main Content */}
+        <Grid item xs={12} md={8}>
+          <HomeMainContent />
+        </Grid>
 
-            {/* Right-side content */}
-            <Grid item xs={12} md={4} lg={3}>
-              <HomeRightSideContent />
-            </Grid>
-          </Grid>
-        </Container>
-      </main>
-    </div>
+        {/* Right-side content */}
+        <Grid item xs={12} md={4}>
+          <HomeRightSideContent />
+        </Grid>
+      </Grid>
+    </Container>
   );
 }
 
 export default Home;
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1
-  },
+  root: {},
   appBarSpacer: theme.mixins.toolbar,
   card: {
     height: "100%"
