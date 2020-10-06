@@ -175,7 +175,7 @@ let itemsList = [
   },
   {
     name: "Job Safety",
-    group: "health"
+    group: "physical"
   },
   {
     name: "K",
@@ -199,7 +199,7 @@ let itemsList = [
   },
   {
     name: "Local Health Departments",
-    group: "health"
+    group: "social"
   },
   {
     name: "Lyme Disease",
@@ -335,7 +335,7 @@ let itemsList = [
   },
   {
     name: "Youth Camps",
-    group: "health"
+    group: "social"
   },
   {
     name: "Youth Smoking",
@@ -344,38 +344,21 @@ let itemsList = [
 ];
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    minWidth: 275
+  mainContent: {
+    minWidth: 275,
+    backgroundColor: "#eee"
   },
-  alphaList: {
-    // display: "flex",
-    // flexDirection: 'column',
-    // backgroundColor: "red",
-  },
-  // ulList: {
-  //   display: "flex",
-  //   flexWrap: "wrap",
-  //   justifyContent: "flex-start",
-  //   backgroundColor: "red",
-  //   width: "33%",
-  //   margin: "0",
-  //   padding: "0",
-  //   "& > *": {
-  //     marginRight: "1.1%",
-  //     textDecoration: "none"
-  //   }
-  // },
   ulList: {
     columns: "3 auto",
+    "@media (max-width: 480px)": {
+      columns: "2 auto"
+    },
     "& > *": {
       textDecoration: "none"
     }
   },
   listItem: {
     listStyleType: "none"
-  },
-  cardHeader: {
-    backgroundColor: "#eee"
   },
   inputRoot: {
     color: "inherit"
@@ -425,19 +408,30 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function HomeMainContent() {
-  const [filters, setFilters] = React.useState(() => ["all"]);
-  const [initialRender, setInitial] = React.useState(() => true);
+  const [filters, setFilters] = React.useState(() => [
+    "all",
+    "health",
+    "environment",
+    "social",
+    "physical"
+  ]);
+  let filteredItems = [...itemsList];
 
   const handleFilter = (event, newFilters) => {
-    console.log("New Filters: ", newFilters, " initial load: ", initialRender);
-    setInitial(false);
+    console.log("New Filters: ", newFilters);
 
-    setFilters(newFilters.filter((x) => x != "all"));
-
-    //If filters are selected and All is chosen we want to override the others
-    if (newFilters.includes("all") && newFilters.length > 1) {
-      console.log("Removing selected filters and using All");
-      setFilters(["all"]);
+    if (event.currentTarget.value === "all") {
+      // If All if previously selected: ie we want all filters off
+      if (filters.includes("all")) {
+        setFilters([]);
+        // If All if not previously selected: ie we want all filters on
+      } else {
+        setFilters(["all", "health", "environment", "social", "physical"]);
+      }
+      // If some other button besides All is selected
+    } else {
+      // Want to exlude All when other filters are selected
+      setFilters(newFilters.filter((x) => x !== "all"));
     }
   };
 
@@ -452,10 +446,16 @@ function HomeMainContent() {
   }
 
   const classes = useStyles();
-
-  //console.log("This state:", filters);
+  filteredItems = filters
+    ? itemsList.filter((item) =>
+        item.group.includes(
+          filters.find((filter) => filter.includes(item.group))
+        )
+      )
+    : itemsList;
+  console.log("This state:", filters, " items count: ", filteredItems.length);
   return (
-    <Grid container spacing={2} className={classes.cardHeader}>
+    <Grid container spacing={2} className={classes.mainContent}>
       <Grid item xs={12}>
         {/* Filter by Group buttons */}
         <ToggleButtonGroup
@@ -502,7 +502,7 @@ function HomeMainContent() {
       {/* Three Column Items List */}
       <Grid item>
         <ul className={classes.ulList}>
-          <ItemsList items={itemsList} />
+          <ItemsList items={filteredItems} />
         </ul>
       </Grid>
     </Grid>
