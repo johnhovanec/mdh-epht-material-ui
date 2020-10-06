@@ -1,5 +1,5 @@
-# Test application for MDH Enivronmental Public Health Tracker 
-## Experimenting with Material-ui to see what it can offer for the EPHT
+# Test application for MDH Environmental Public Health Tracker 
+## Experimenting with material-ui to see what it can offer for the EPHT
 
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
