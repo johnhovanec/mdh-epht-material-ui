@@ -11,11 +11,14 @@ import InputBase from "@material-ui/core/InputBase";
 import { fade, makeStyles } from "@material-ui/core/styles";
 import MenuIcon from "@material-ui/icons/Menu";
 import SearchIcon from "@material-ui/icons/Search";
+import ClearIcon from "@material-ui/icons/Clear";
+import IconButton from "@material-ui/core/IconButton";
 import Paper from "@material-ui/core/Paper";
 import Container from "@material-ui/core/Container";
 import ToggleButton from "@material-ui/lab/ToggleButton";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 
+// This would be coming in as props from the parent; mocked-up locally for now
 let itemsList = [
   {
     name: "A",
@@ -399,6 +402,14 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     justifyContent: "center"
   },
+  clearIcon: {
+    paddingLeft: theme.spacing(4),
+    height: "100%",
+    position: "absolute",
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center"
+  },
   title: {
     fontSize: 14
   },
@@ -415,11 +426,10 @@ function HomeMainContent() {
     "social",
     "physical"
   ]);
-  let filteredItems = [...itemsList];
+  const [searchTerm, setSearchTerm] = React.useState("");
+  //let filteredItems = [...itemsList];
 
   const handleFilter = (event, newFilters) => {
-    console.log("New Filters: ", newFilters);
-
     if (event.currentTarget.value === "all") {
       // If All if previously selected: ie we want all filters off
       if (filters.includes("all")) {
@@ -435,6 +445,16 @@ function HomeMainContent() {
     }
   };
 
+  const handleSearch = (event) => {
+    console.log("In search, event value: ", event.target.value);
+    setSearchTerm(event.target.value.toLowerCase());
+  };
+
+  const handleSearchCancel = () => {
+    console.log("In search cancel");
+    setSearchTerm("");
+  };
+
   function ItemsList(props) {
     return props.items.map((item, index) => (
       <a href="/">
@@ -446,14 +466,21 @@ function HomeMainContent() {
   }
 
   const classes = useStyles();
-  filteredItems = filters
-    ? itemsList.filter((item) =>
-        item.group.includes(
-          filters.find((filter) => filter.includes(item.group))
-        )
-      )
-    : itemsList;
-  console.log("This state:", filters, " items count: ", filteredItems.length);
+  const filteredItems = itemsList.filter((item) =>
+    item.group.includes(filters.find((filter) => filter.includes(item.group)))
+  );
+  console.log(
+    "This state:",
+    filters,
+    " items count: ",
+    filteredItems.length,
+    filteredItems
+  );
+  const searchedItems = filteredItems.filter((x) =>
+    x.name.includes(searchTerm.toLowerCase())
+  );
+  console.log("searchTerm: ", searchTerm, " searchItems: ", searchedItems);
+
   return (
     <Grid container spacing={2} className={classes.mainContent}>
       <Grid item xs={12}>
@@ -486,16 +513,27 @@ function HomeMainContent() {
       <Grid item xs={12}>
         <div className={classes.search}>
           <div className={classes.searchIcon}>
-            <SearchIcon />
+            <SearchIcon fontSize="small" color="action" />
           </div>
           <InputBase
             placeholder="Search…"
+            onChange={handleSearch}
             classes={{
               root: classes.inputRoot,
               input: classes.inputInput
             }}
             inputProps={{ "aria-label": "search" }}
           />
+          <div className={classes.clearIcon}>
+            <IconButton
+              color="primary"
+              aria-label="upload picture"
+              onClick={handleSearchCancel}
+              component="span"
+            >
+              <ClearIcon fontSize="small" color="action" />
+            </IconButton>
+          </div>
         </div>
       </Grid>
 
