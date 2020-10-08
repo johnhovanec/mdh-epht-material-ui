@@ -426,22 +426,27 @@ function HomeMainContent() {
     "social",
     "physical"
   ]);
+  const [buttons, setButtons] = React.useState(() => ["all"]);
   const [searchTerm, setSearchTerm] = React.useState("");
   //let filteredItems = [...itemsList];
 
-  const handleFilter = (event, newFilters) => {
-    if (event.currentTarget.value === "all") {
-      // If All if previously selected: ie we want all filters off
-      if (filters.includes("all")) {
-        setFilters([]);
-        // If All if not previously selected: ie we want all filters on
-      } else {
-        setFilters(["all", "health", "environment", "social", "physical"]);
-      }
-      // If some other button besides All is selected
-    } else {
-      // Want to exlude All when other filters are selected
-      setFilters(newFilters.filter((x) => x !== "all"));
+  // Leaving this method in since I think filtering will grow more complex
+  const handleFilters = (event, newFilters) => {};
+
+  const handleButtons = (event, selectedButtons) => {
+    // If another filter is selected and 'all' is already selected we want to remove 'all'
+    if (selectedButtons.includes("all") && buttons.includes("all")) {
+      setButtons(selectedButtons.filter((x) => x !== "all"));
+      setFilters(selectedButtons.filter((x) => x !== "all"));
+      // If 'all' is clicked but not already selected that removes the other filters
+    } else if (selectedButtons.includes("all") && !buttons.includes("all")) {
+      setButtons(["all"]);
+      setFilters(["all", "health", "environment", "social", "physical"]);
+    }
+    // Setting filters that don't involve all
+    else {
+      setButtons(selectedButtons);
+      setFilters(selectedButtons);
     }
   };
 
@@ -479,15 +484,15 @@ function HomeMainContent() {
   const searchedItems = filteredItems.filter((x) =>
     x.name.includes(searchTerm.toLowerCase())
   );
-  console.log("searchTerm: ", searchTerm, " searchItems: ", searchedItems);
+  //console.log("searchTerm: ", searchTerm, " searchItems: ", searchedItems);
 
   return (
     <Grid container spacing={2} className={classes.mainContent}>
       <Grid item xs={12}>
         {/* Filter by Group buttons */}
         <ToggleButtonGroup
-          value={filters}
-          onChange={handleFilter}
+          value={buttons}
+          onChange={handleButtons}
           aria-label="text formatting"
           color="primary"
           size="small"
