@@ -371,7 +371,7 @@ const useStyles = makeStyles((theme) => ({
     // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
     transition: theme.transitions.create("width"),
-    width: "100%",
+    // width: "250px",
     [theme.breakpoints.up("sm")]: {
       width: "12ch",
       "&:focus": {
@@ -382,9 +382,9 @@ const useStyles = makeStyles((theme) => ({
   search: {
     position: "relative",
     borderRadius: "4px",
-    backgroundColor: fade("#fff", 0.75),
+    backgroundColor: fade("#fff", 0.55),
     "&:hover": {
-      backgroundColor: fade(theme.palette.primary.light, 0.07)
+      backgroundColor: fade("#fff", 1)
     },
     marginLeft: 0,
     width: "100%",
@@ -403,12 +403,12 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center"
   },
   clearIcon: {
-    paddingLeft: theme.spacing(4),
+    paddingLeft: theme.spacing(1),
     height: "100%",
     position: "absolute",
     display: "inline-flex",
-    alignItems: "center",
-    justifyContent: "center"
+    alignItems: "space-between",
+    justifyContent: "flex-start"
   },
   title: {
     fontSize: 14
@@ -428,7 +428,6 @@ function HomeMainContent() {
   ]);
   const [buttons, setButtons] = React.useState(() => ["all"]);
   const [searchTerm, setSearchTerm] = React.useState("");
-  //let filteredItems = [...itemsList];
 
   // Leaving this method in since I think filtering will grow more complex
   const handleFilters = (event, newFilters) => {};
@@ -455,6 +454,21 @@ function HomeMainContent() {
     setSearchTerm(event.target.value.toLowerCase());
   };
 
+  const handleSearchResult = (items) => {
+    // Return starts with for a single letter search term
+    if (searchTerm.length === 0) {
+      return items;
+    } else if (searchTerm.length === 1) {
+      return items.filter((x) =>
+        x.name.toLowerCase().startsWith(searchTerm.toLowerCase())
+      );
+    } else {
+      return filteredItems.filter((x) =>
+        x.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+  };
+
   const handleSearchCancel = () => {
     console.log("In search cancel");
     setSearchTerm("");
@@ -474,21 +488,15 @@ function HomeMainContent() {
   const filteredItems = itemsList.filter((item) =>
     item.group.includes(filters.find((filter) => filter.includes(item.group)))
   );
-  console.log(
-    "This state:",
-    filters,
-    " items count: ",
-    filteredItems.length,
-    filteredItems
-  );
-  const searchedItems = filteredItems.filter((x) =>
-    x.name.includes(searchTerm.toLowerCase())
-  );
-  //console.log("searchTerm: ", searchTerm, " searchItems: ", searchedItems);
+  console.log("This state:", filters, " items count: ", filteredItems.length);
+
+  const itemsToDisplay = handleSearchResult(filteredItems);
+
+  console.log("searchTerm: ", searchTerm, " searchItems: ", itemsToDisplay);
 
   return (
     <Grid container spacing={2} className={classes.mainContent}>
-      <Grid item xs={12}>
+      <Grid item xs={12} sm={8}>
         {/* Filter by Group buttons */}
         <ToggleButtonGroup
           value={buttons}
@@ -515,7 +523,7 @@ function HomeMainContent() {
         </ToggleButtonGroup>
       </Grid>
 
-      <Grid item xs={12}>
+      <Grid item xs={12} sm={4}>
         <div className={classes.search}>
           <div className={classes.searchIcon}>
             <SearchIcon fontSize="small" color="action" />
@@ -528,11 +536,12 @@ function HomeMainContent() {
               input: classes.inputInput
             }}
             inputProps={{ "aria-label": "search" }}
+            value={searchTerm}
           />
           <div className={classes.clearIcon}>
             <IconButton
               color="primary"
-              aria-label="upload picture"
+              aria-label="clear search"
               onClick={handleSearchCancel}
               component="span"
             >
@@ -545,7 +554,7 @@ function HomeMainContent() {
       {/* Three Column Items List */}
       <Grid item>
         <ul className={classes.ulList}>
-          <ItemsList items={filteredItems} />
+          <ItemsList items={itemsToDisplay} />
         </ul>
       </Grid>
     </Grid>
