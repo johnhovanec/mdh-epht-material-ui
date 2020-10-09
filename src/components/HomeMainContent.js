@@ -368,30 +368,31 @@ const useStyles = makeStyles((theme) => ({
   },
   inputInput: {
     padding: theme.spacing(1, 1, 1, 0),
+    backgroundColor: "",
     // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-    transition: theme.transitions.create("width"),
-    // width: "250px",
-    [theme.breakpoints.up("sm")]: {
-      width: "12ch",
-      "&:focus": {
-        width: "20ch"
-      }
-    }
+    // transition: theme.transitions.create("width"),
+    width: "300px"
+    // [theme.breakpoints.up("sm")]: {
+    //   width: "12ch",
+    //   "&:focus": {
+    //     width: "20ch"
+    //   }
+    // }
   },
   search: {
     position: "relative",
     borderRadius: "4px",
-    backgroundColor: fade("#fff", 0.55),
+    backgroundColor: fade("#fff", 0.5),
     "&:hover": {
-      backgroundColor: fade("#fff", 1)
+      backgroundColor: fade("#fff", 0.8)
     },
-    marginLeft: 0,
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      marginLeft: 0,
-      width: "auto"
-    }
+    marginLeft: "0",
+    width: "100%"
+    // [theme.breakpoints.up("sm")]: {
+    //   marginLeft: theme.spacing(),
+    //   width: "auto"
+    // }
   },
   searchIcon: {
     padding: theme.spacing(0, 2),
@@ -403,12 +404,13 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center"
   },
   clearIcon: {
-    paddingLeft: theme.spacing(1),
+    padding: theme.spacing(0, 0.5),
     height: "100%",
     position: "absolute",
-    display: "inline-flex",
-    alignItems: "space-between",
-    justifyContent: "flex-start"
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    zIndex: 100
   },
   title: {
     fontSize: 14
@@ -451,7 +453,7 @@ function HomeMainContent() {
 
   const handleSearch = (event) => {
     console.log("In search, event value: ", event.target.value);
-    setSearchTerm(event.target.value.toLowerCase());
+    setSearchTerm(event.target.value);
   };
 
   const handleSearchResult = (items) => {
@@ -496,7 +498,7 @@ function HomeMainContent() {
 
   return (
     <Grid container spacing={2} className={classes.mainContent}>
-      <Grid item xs={12} sm={8}>
+      <Grid item xs={12} sm={7}>
         {/* Filter by Group buttons */}
         <ToggleButtonGroup
           value={buttons}
@@ -523,11 +525,24 @@ function HomeMainContent() {
         </ToggleButtonGroup>
       </Grid>
 
-      <Grid item xs={12} sm={4}>
+      <Grid item xs={12} sm={5}>
         <div className={classes.search}>
-          <div className={classes.searchIcon}>
-            <SearchIcon fontSize="small" color="action" />
-          </div>
+          {searchTerm.length === 0 ? (
+            <div className={classes.searchIcon}>
+              <SearchIcon fontSize="small" color="action" />
+            </div>
+          ) : (
+            <div className={classes.clearIcon}>
+              <IconButton
+                color="primary"
+                aria-label="clear search"
+                onClick={handleSearchCancel}
+                component="span"
+              >
+                <ClearIcon fontSize="small" color="action" />
+              </IconButton>
+            </div>
+          )}
           <InputBase
             placeholder="Search…"
             onChange={handleSearch}
@@ -538,16 +553,6 @@ function HomeMainContent() {
             inputProps={{ "aria-label": "search" }}
             value={searchTerm}
           />
-          <div className={classes.clearIcon}>
-            <IconButton
-              color="primary"
-              aria-label="clear search"
-              onClick={handleSearchCancel}
-              component="span"
-            >
-              <ClearIcon fontSize="small" color="action" />
-            </IconButton>
-          </div>
         </div>
       </Grid>
 
